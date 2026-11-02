@@ -1,44 +1,69 @@
-# Roteiro de teste no Roblox Studio
+# Testes antes de abrir ao público
 
-Status inicial: testes automatizados de domínio e estrutura disponíveis; este roteiro exige Roblox Studio e ainda não foi executado aqui.
+**Automático executado:** sintaxe do subconjunto Lua, regras de catálogo/XP/atributos/receitas/estoque, conectividade de labirintos, simulação de falhas de recibo e teleporte, integridade e fontes embutidos no XML.
 
-## Primeiro carregamento
+**Ainda não executado neste ambiente:** carregamento e playtest real no Roblox Studio, teleporte pelo aplicativo Roblox, persistência real, recebimento de compras e avaliação visual/performance em aparelhos reais.
 
-- Abra LittleRPG.rbxlx; confira três andares e iluminação no editor e ausência de erros no Output.
-- Inicie Play; confirme avatar R6, câmera, animação ao caminhar, arma na mão, HUD e menu M.
-- No santuário, vida recupera e ataques não atingem inimigos. Fora dele, um ataque frontal dentro do alcance causa dano; longe, pelas costas ou através de paredes não.
-- Examine as cinco famílias de arma: empunhadura, animação, intervalo e alcance. Ajuste `Tool.Grip` se desejar outra orientação artística.
-- Inimigos perseguem, avisam o ataque, causam dano, morrem, dão XP e cristais e renascem. Sair da área vermelha evita o dano.
-- Jogador derrotado reaparece com equipamento e estado preservados. Cair da ilha deve retornar ao santuário.
+## 1. Carregamento e arte
 
-## Progressão e menu
+- Abra LittleRPG.rbxlx e verifique o Output. Confirme casas acessíveis, portas abertas, cidades seguras e um pilar no centro de cada mundo.
+- Confirme avatar R6, câmera, arma na mão, modelos nos previews e animação com movimento.
+- Observe membros, empunhadura, colisões e altura da câmera; ajuste poses e Tool.Grip se necessário após a inspeção real.
+- Veja o primeiro andar: somente lobos e javalis na área selvagem. Confira proporção da cidade e clareza do caminho até o pilar.
+- Confirme caminhos da IA: inimigos não devem atravessar as paredes de pedra; registre falhas de navegação para ajustar geometria e AgentRadius.
 
-- Menu tem exatamente três abas. Eventos não contém atividades fictícias.
-- No inventário, alternar mochila/forja permite navegar pelos 50 equipamentos.
-- Comprar sem cristais ou nível é rejeitado; comprar duas vezes não duplica débito; equipar item que não possui é rejeitado.
-- Nível sobe ao acumular XP, recupera vida e nunca passa de 100.
-- Derrote Guardião da Aurora e chegue ao nível 30 para usar o primeiro portal. Derrote Oráculo e chegue ao nível 65 para o segundo. Portais de retorno funcionam.
-- Todos os jogadores com contribuição mínima de 5% e próximos recebem recompensa do chefe; jogadores de outro andar ou afastados não.
+## 2. Primeiro ciclo jogável
 
-## Multiplayer e dados
+- Escolha uma das três armas; tente escolher outra depois, que deve ser recusado.
+- Com perfil novo, derrote dois inimigos de nível 1: 2 XP + 2 XP devem levar ao nível 2, com um ponto.
+- Distribua o ponto uma única vez. Confira vida, dano, velocidade, dash e habilidade de ferraria conforme atributo escolhido.
+- Teste clique, Z, Q, Shift, energia, recargas, vida, poções, morte e retorno.
+- Confira dez ataques básicos de 10 contra inimigo de 100 HP, antes de evoluir atributos. Z deve dar 34 com arma inicial comum.
+- Ataques de jogador e inimigo não devem atravessar paredes; ataques não devem causar dano dentro da cidade.
 
-- Em Server & Clients com dois jogadores, confirme que dano, XP, moedas e desbloqueio pertencem ao jogador correto.
-- Spam de ataque deve respeitar o intervalo no servidor; troca de arma não elimina esse intervalo.
-- Em experiência de teste publicada, adquira um item, saia e entre: nível, XP, cristais, item, arma e andar devem persistir.
-- Não habilite acesso do Studio aos dados reais para este teste: sessões do Studio são intencionalmente temporárias.
-- Simule falha de carregamento: jogador deve ser desconectado sem gravar um perfil vazio. Verifique avisos de salvamento no Output.
-- Teste reconexão rápida: trava de sessão impede dois servidores de escreverem o mesmo perfil ao mesmo tempo. Uma sessão abandonada expira após 180 segundos.
+## 3. Mineração e forja
 
-## Dispositivos e arte
+- Minere vários veios até obter minério e carvão. Confira escassez, limite de distância e recarga do veio esgotado.
+- Com duas pessoas no mesmo veio, confira que há uma única recompensa quando quebra.
+- Forje perto da bancada: débito único, aquecimento, metal líquido, molde, marteladas e arma resultante.
+- Confirme modelo do molde para adaga, rapieira e martelo, estado de movimento do personagem e liberação ao terminar.
+- Tente fabricar sem recursos, fora da bancada e durante outra fabricação. Nenhum custo extra deve ocorrer.
+- Em experiência publicada de teste, desconecte durante fabricação, reconecte e confirme conclusão única do trabalho salvo.
 
-- Device Emulator em celular horizontal e vertical: menu inteiro visível, lista rolável, botão de ataque, botão de fechar e controles padrão acessíveis.
-- Confirme seleção da UI com mouse/toque; os atalhos Y/R2 são complementares e não equivalem a certificação completa de console.
-- Teste modo gráfico leve, FPS e consumo de memória no notebook alvo.
-- Importe os WAVs, configure IDs e confirme permissões de áudio. Cheque volumes e repetição ambiente, entrada/saída da camada mecânica no terceiro andar e botão de silenciar.
+## 4. Loja e interface
 
-## Limites da primeira versão
+- Teste as três abas principais e os submenus. Eventos deve continuar vazio.
+- Navegue por categoria antes de ver armas; confira em estoque/fora de estoque, preço e nível.
+- Esgote a cota de uma comum, reconecte dentro da mesma janela e confirme a cota. Aguarde renovação e confirme novo estoque.
+- Verifique que os dois primeiros andares não vendem míticas e nenhum mercador de moedas vende lendária/ultra.
+- Compre e use cura/energia; atualize a picareta; não permita comprar melhoria inferior à atual.
+- Venda uma arma não equipada e confira a moeda. Arma equipada não deve ser vendida.
+- Em celular horizontal e vertical, teste leitura, rolagem, botão de fechar, escolha inicial e ações de toque.
 
-- A IA usa movimento direto e formas ancoradas. Não oferece navegação complexa, animações de combate capturadas ou física de criaturas.
-- Salvamento usa UpdateAsync e trava de sessão. Quedas abruptas ainda podem perder o progresso desde o último autosave de 45 segundos.
-- As validações de ação no servidor são uma base; proteção completa contra exploração de movimento e testes de carga ficam para uma etapa de produção.
-- Todo som depende da importação autorizada para a experiência. Não há IDs públicos arbitrários como substitutos.
+## 5. Dungeon, progressão e multiplayer
+
+- No Studio, entre no pilar: o modo deve ser explicitamente local de teste.
+- Encontre os três selos. O portão da arena deve recusar passagem antes dos três.
+- Derrote o chefe, volte à cidade e use o elevador. Não permita viajar para andar ainda bloqueado ou estando longe do elevador.
+- Repita o ciclo nos três andares; valide também retorno ao andar anterior.
+- Publique em experiência privada e teste pelo aplicativo Roblox: entrar no pilar deve mudar de servidor, com instância solo reservada.
+- Faça o retorno e reconecte rapidamente. Perfil, equipamento e desbloqueios devem persistir.
+- Com dois clientes públicos, confirme independência de estoque, inventário e pontos; mineração e inimigos são compartilhados no mesmo servidor.
+
+## 6. Dados, áudio e Robux
+
+- IDs 0 devem manter ofertas Robux desativadas. Configure produtos próprios e confirme nome, raridade e preço na janela oficial.
+- Teste compra, reconexão, repetição do recibo, mochila cheia e falha de gravação. A entrega não deve duplicar e não deve ser confirmada antes de salvar.
+- Não use PromptProductPurchaseFinished para conceder itens; a implementação usa ProcessReceipt.
+- Confira migração de perfil v1 sem perda de nível, moedas ou armas convertidas. Faça backup dos dados antes de testes de migração fora de uma experiência isolada.
+- Importe os sons originais e confira autorização, volume, silêncio e camada mecânica no andar 3.
+- Teste gráficos leves e completos no notebook e em um celular. Esta versão ainda precisa de medição de FPS, memória e carga de servidor no Roblox.
+
+## Limitações conhecidas
+
+- Animações e criaturas são procedurais, sem captura de movimento, malhas esculpidas ou animações publicadas em assets.
+- A dungeon reservada é solo; grupo, raid e matchmaking ficam fora deste MVP.
+- Os três labirintos são determinísticos. Não se regeneram aleatoriamente a cada entrada.
+- A trava de sessão expira em 180 segundos se um servidor cair sem liberar os dados; o autosave é a cada 40 segundos.
+- O nível 15.000 é um limite de sistema, não uma afirmação de balanceamento dos três primeiros andares até esse nível.
+- Validação de distância, recursos, recarga, propriedade, recibos e estado não substitui auditoria de segurança nem proteção completa contra exploração de movimento.
